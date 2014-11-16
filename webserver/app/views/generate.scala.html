@@ -1,0 +1,150 @@
+@(bb:BaseBank)
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> BaseBank Generation </title>
+  </head>
+  <body>
+    <h2> Banks </h2>    
+    <table>
+      <tr>
+	<th>Id</th>
+	<th>Name</th>
+      </tr>
+      @for(p <- bb.banks){
+		<tr>
+		  <td>@p.id</td>
+		  <td>@p.name</td>
+		  }
+		</tr>
+    </table>
+    <h2> Branches </h2>
+    <table>
+      <tr>
+	<th>Id</th>
+	<th>Bank</th>
+	<th>Location</th>
+      </tr>
+      @for(p <- bb.branches){
+		<tr>
+		  <td>@p.id</td>
+		  <td>@p.bank</td>
+		  <td>@p.location</td>
+		  }
+		</tr>
+    </table>
+    
+    <h2> Receives </h2>
+    <table>
+      <tr>
+	<th>Id</th>
+	<th>Account</th>
+	<th>Amount</th>
+	<th>From</th>
+	<th>Timestamp</th>
+      </tr>
+      @for(p <- bb.receives){
+		<tr>
+		  <td>@p.id</td>
+		  <td>@p.account</td>
+		  <td>@p.amount</td>
+		  <td>@p.from</td>
+		  <td>@p.timestamp</td>
+		  }
+		</tr>
+    </table>
+    
+    <h2> Sends </h2>
+    <table>
+      <tr>
+	<th>Id</th>
+	<th>Account</th>
+	<th>Amount</th>
+	<th>To</th>
+	<th>Timestamp</th>
+      </tr>
+      @for(p <- bb.sends){
+		<tr>
+		  <td>@p.id</td>
+		  <td>@p.account</td>
+		  <td>@p.amount</td>
+		  <td>@p.to</td>
+		  <td>@p.timestamp</td>
+		  }
+		</tr>
+    </table>
+    <h2> Addresses </h2>
+    <table>
+      <tr>
+	<th>Id</th>
+	<th>Street</th>
+	<th>City</th>
+      </tr>
+      @for(p <- bb.addresses){
+		<tr>
+		  <td>@p.id</td>
+		  <td>@p.street</td>
+		  <td>@p.city</td>
+		  }
+		</tr>
+    </table>
+    
+    <h2> Entities </h2>
+    <table>
+      <tr>
+	<th>Id</th>
+	<th>Name</th>
+	<th>Field</th>
+      </tr>
+      @for(p <- bb.entities){
+		<tr>
+		  <td>@p.id</td>
+		  <td>@p.name</td>
+		  <td>@p.field</td>
+		  }
+		</tr>
+    </table>
+
+    <h2> Accounts </h2>
+    <table>
+      <tr>
+	<th>Id</th>
+	<th>Sum</th>
+	<th>Client</th>
+	<th>Entity</th>
+	<th>isClient</th>
+	<th>Pass</th>			
+      </tr>
+      @for(p <- bb.accounts){
+		<tr>
+		  <td>@p.id</td>
+		  <td>@p.sum</td>
+		  <td>@p.client</td>
+		  <td>@p.entity</td>
+		  <td>@p.isClient</td>
+		  <td>@p.pass</td>		  
+		  }
+		</tr>
+    </table>
+
+    
+    <h2> Clients </h2>
+    <table>
+      <tr>
+	<th>Id</th>
+	<th>Name</th>
+	<th>location</th>
+      </tr>
+      @for(p <- bb.clients){
+		<tr>
+		  <td>@p.id</td>
+		  <td>@p.name</td>
+		  <td>@p.location</td>
+		  }
+		</tr>
+    </table>
+
+
+  </body>
+</html>

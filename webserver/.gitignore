@@ -1,7 +1,11 @@
 logs
 project/project
 project/target
+.ensime_cache
 target
 tmp
 dist
 .cache
+*~
+*#
+.#*
