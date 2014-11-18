@@ -1,0 +1,42 @@
+@(acc: AccountAuth)
+
+@main("User transactions", acc) {
+
+<h2 class="subheader"> Send money </h2>    
+    <form class="form-inline">
+    <input type="text" class="input-small" placeholder="To">
+    <input type="text" class="input-small" placeholder="Amount">
+    <button type="submit" class="btn">Send</button>
+    </form>
+<h2 class="subheader"> Transactions </h2>    
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+	<th>Id</th>
+	<th>Amount</th>
+	<th>To</th>
+	<th>From</th>
+	<th>Timestamp</th>	
+      </tr>      
+    </thead>
+    <tbody>
+      <tr>
+	<td>0</td>
+	<td>223</td>
+	<td>22</td>
+	<td>22</td>
+	<td>2321321</td>		
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+}{
+
+<li><a href="/">Home</a></li>
+<li><a href="/overview">Report</a></li>
+<li class="active"><a href="#">Transactions <span class="sr-only">(current)</span> </a></li>
+
+}()

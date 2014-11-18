@@ -1,7 +1,31 @@
-@(message: String)
+@(message: String, acc: AccountAuth)
 
-@main("Welcome to Play") {
-
-    @play20.welcome(message)
-
+@main("Welcome to BaseBank", acc) {
+<p>
+There is 2 interfaces:
+One for admin
+One for user
+<p>
+</p>
+You're currently
+@if(acc.admin){
+an admin
+} else {
+a user
 }
+</p>
+}{
+<li class="active"><a href="/">Home <span class="sr-only">(current)</span> </a></li>
+@if(acc.admin){
+<li><a href="#">Overview</a></li>
+<li><a href="#">Cat 1</a></li>
+<li><a href="#">Cat 2</a></li>
+<li><a href="#">Cat 3</a></li>
+<li><a href="#">Cat 4</a></li>
+<li><a href="../generate">Database</a></li>
+
+} else {
+<li><a href="#">Report</a></li>
+<li><a href="../transactions">Transactions</a></li>
+}
+}()

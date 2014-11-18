@@ -1,0 +1,68 @@
+@(acc: AccountAuth)
+
+@main("Overview", acc) {
+
+          <div class="row placeholders">
+            <div class="col-xs-6 col-sm-4 placeholder">
+	      <canvas id="myChart" width="400" height="400"></canvas>
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>	      
+            </div>
+            <div class="col-xs-6 col-sm-4 placeholder">
+	      <canvas id="myChart2" width="400" height="400"></canvas>	      
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+            <div class="col-xs-6 col-sm-4 placeholder">
+	      <canvas id="myChart3" width="400" height="400"></canvas>	      
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+          </div>
+
+
+
+}{
+
+<li><a href="/">Home</a></li>
+<li class="active"><a href="/overview">Overview <span class="sr-only">(current)</span> </a></li>
+<li><a href="/transactions">Transactions</a></li>
+
+}{
+<script>
+  var data = {
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    datasets: [
+        {
+            label: "My First dataset",
+            fillColor: "rgba(220,220,220,0.2)",
+            strokeColor: "rgba(220,220,220,1)",
+            pointColor: "rgba(220,220,220,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+            label: "My Second dataset",
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)",
+            data: [28, 48, 40, 19, 86, 27, 90]
+        }
+    ]
+};
+
+  var ctx = document.getElementById("myChart").getContext("2d");
+  var ctx2 = document.getElementById("myChart3").getContext("2d");
+  var ctx3 = document.getElementById("myChart2").getContext("2d");  
+  var myNewChart = new Chart(ctx).Line(data);
+  var myNewChart2 = new Chart(ctx2).Line(data);
+  var myNewChar3t = new Chart(ctx3).Line(data);  
+</script>
+
+}
+

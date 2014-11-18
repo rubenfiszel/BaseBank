@@ -1,150 +1,235 @@
-@(bb:BaseBank)
+@(bb:BaseBank)(acc: AccountAuth)
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <title> BaseBank Generation </title>
-  </head>
-  <body>
-    <h2> Banks </h2>    
-    <table>
-      <tr>
-	<th>Id</th>
-	<th>Name</th>
-      </tr>
-      @for(p <- bb.banks){
-		<tr>
-		  <td>@p.id</td>
-		  <td>@p.name</td>
-		  }
-		</tr>
-    </table>
-    <h2> Branches </h2>
-    <table>
-      <tr>
-	<th>Id</th>
-	<th>Bank</th>
-	<th>Location</th>
-      </tr>
-      @for(p <- bb.branches){
-		<tr>
-		  <td>@p.id</td>
-		  <td>@p.bank</td>
-		  <td>@p.location</td>
-		  }
-		</tr>
-    </table>
+@main("Database", acc) {
+<h2 class="subheader"> Generate database </h2>    
+    <form class="form-inline">
+    <input type="text" class="input-small" placeholder="Seed" name="seed">
+    <button type="submit" class="btn">Generate</button>
+    </form>
+
+<h2 class="subheader"> Current database </h2>        
+
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#branches" data-toggle="tab">Branches</a></li>
+  <li><a href="#banks" data-toggle="tab">Banks</a></li>
+  <li><a href="#accounts" data-toggle="tab">Accounts</a></li>
+  <li><a href="#clients" data-toggle="tab">Clients</a></li>
+  <li><a href="#entities" data-toggle="tab">Entities</a></li>    
+  <li><a href="#receives" data-toggle="tab">Receives</a></li>
+  <li><a href="#sends" data-toggle="tab">Sends</a></li>
+  <li><a href="#addresses" data-toggle="tab">Addresses</a></li>        
+</ul>
+<div class="tab-content">
+  <div class="tab-pane" id="banks">
+    <div class="table-responsive">
+      <table class="table table-striped">
+	<thead>
+	  <tr>
+	    <th>Id</th>
+	    <th>Name</th>
+	  </tr>      
+	</thead>
+	<tbody> @for(p <- bb.banks){
+			  <tr>
+			    <td>@p.id</td>
+			    <td>@p.name</td>
+			    }
+			  </tr>
+			  
+	</tbody>
+      </table>
+    </div>
+  </div>
+  <div class="tab-pane active" id="branches">
+    <div class="table-responsive">
+      <table class="table table-striped">
+	<thead>
+	  <tr>
+	    <th>Id</th>
+	    <th>Bank</th>
+	    <th>Location</th>
+	  </tr>
+	</thead>
+	<tbody> @for(p <- bb.branches){
+			  <tr>
+			    <td>@p.id</td>
+			    <td>@p.bank</td>
+			    <td>@p.location</td>
+			    }
+			  </tr>
+			  
+	</tbody>
+      </table>
+    </div>
+  </div>
+  <div class="tab-pane" id="receives">
+
+    <div class="table-responsive">
+      <table class="table table-striped">
+	<thead>
+	  <tr>
+	    <th>Id</th>
+	    <th>Account</th>
+	    <th>Amount</th>
+	    <th>From</th>
+	    <th>Timestamp</th>
+	  </tr>
+	</thead>
+	<tbody> @for(p <- bb.receives){
+			  <tr>
+			    <td>@p.id</td>
+			    <td>@p.account</td>
+			    <td>@p.amount</td>
+			    <td>@p.from</td>
+			    <td>@p.timestamp</td>
+			    }
+			  </tr>
+			  
+	</tbody>
+      </table>
+    </div>
     
-    <h2> Receives </h2>
-    <table>
-      <tr>
-	<th>Id</th>
-	<th>Account</th>
-	<th>Amount</th>
-	<th>From</th>
-	<th>Timestamp</th>
-      </tr>
-      @for(p <- bb.receives){
-		<tr>
-		  <td>@p.id</td>
-		  <td>@p.account</td>
-		  <td>@p.amount</td>
-		  <td>@p.from</td>
-		  <td>@p.timestamp</td>
-		  }
-		</tr>
-    </table>
+  </div>
+  <div class="tab-pane" id="sends">
+
+    <div class="table-responsive">
+      <table class="table table-striped">
+	<thead>
+	  <tr>
+	    <th>Id</th>
+	    <th>Account</th>
+	    <th>Amount</th>
+	    <th>To</th>
+	    <th>Timestamp</th>
+	  </tr>
+	</thead>
+	<tbody> @for(p <- bb.sends){
+			  <tr>
+			    <td>@p.id</td>
+			    <td>@p.account</td>
+			    <td>@p.amount</td>
+			    <td>@p.to</td>
+			    <td>@p.timestamp</td>
+			    }
+			  </tr>
+			  
+	</tbody>
+      </table>
+    </div>
+
+  </div>
+  <div class="tab-pane" id="addresses">
     
-    <h2> Sends </h2>
-    <table>
-      <tr>
-	<th>Id</th>
-	<th>Account</th>
-	<th>Amount</th>
-	<th>To</th>
-	<th>Timestamp</th>
-      </tr>
-      @for(p <- bb.sends){
-		<tr>
-		  <td>@p.id</td>
-		  <td>@p.account</td>
-		  <td>@p.amount</td>
-		  <td>@p.to</td>
-		  <td>@p.timestamp</td>
-		  }
-		</tr>
-    </table>
-    <h2> Addresses </h2>
-    <table>
-      <tr>
-	<th>Id</th>
-	<th>Street</th>
-	<th>City</th>
-      </tr>
-      @for(p <- bb.addresses){
-		<tr>
-		  <td>@p.id</td>
-		  <td>@p.street</td>
-		  <td>@p.city</td>
-		  }
-		</tr>
-    </table>
-    
-    <h2> Entities </h2>
-    <table>
-      <tr>
-	<th>Id</th>
-	<th>Name</th>
-	<th>Field</th>
-      </tr>
-      @for(p <- bb.entities){
-		<tr>
-		  <td>@p.id</td>
-		  <td>@p.name</td>
-		  <td>@p.field</td>
-		  }
-		</tr>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-striped">
+	<thead>
+	  <tr>
+	    <th>Id</th>
+	    <th>Street</th>
+	    <th>City</th>
+	  </tr>
+	</thead>
+	<tbody> @for(p <- bb.addresses){
+			  <tr>
+			    <td>@p.id</td>
+			    <td>@p.street</td>
+			    <td>@p.city</td>
+			    }
+			  </tr>
+			  
+	</tbody>
+      </table>
+    </div>
 
-    <h2> Accounts </h2>
-    <table>
-      <tr>
-	<th>Id</th>
-	<th>Sum</th>
-	<th>Client</th>
-	<th>Entity</th>
-	<th>isClient</th>
-	<th>Pass</th>			
-      </tr>
-      @for(p <- bb.accounts){
-		<tr>
-		  <td>@p.id</td>
-		  <td>@p.sum</td>
-		  <td>@p.client</td>
-		  <td>@p.entity</td>
-		  <td>@p.isClient</td>
-		  <td>@p.pass</td>		  
-		  }
-		</tr>
-    </table>
-
-    
-    <h2> Clients </h2>
-    <table>
-      <tr>
-	<th>Id</th>
-	<th>Name</th>
-	<th>location</th>
-      </tr>
-      @for(p <- bb.clients){
-		<tr>
-		  <td>@p.id</td>
-		  <td>@p.name</td>
-		  <td>@p.location</td>
-		  }
-		</tr>
-    </table>
+  </div>
+  <div class="tab-pane" id="entities">
+    <div class="table-responsive">
+      <table class="table table-striped">
+	<thead>
+	  <tr>
+	    <th>Id</th>
+	    <th>Name</th>
+	    <th>Field</th>
+	  </tr>
+	</thead>
+	<tbody> @for(p <- bb.entities){
+			  <tr>
+			    <td>@p.id</td>
+			    <td>@p.name</td>
+			    <td>@p.field</td>
+			    }
+			  </tr>
+			  
+	</tbody>
+      </table>
+    </div>    
+  </div>
+  <div class="tab-pane" id="accounts">
 
 
-  </body>
-</html>
+    <div class="table-responsive">
+      <table class="table table-striped">
+	<thead>
+	  <tr>
+	    <th>Id</th>
+	    <th>Sum</th>
+	    <th>Client</th>
+	    <th>Entity</th>
+	    <th>isClient</th>
+	    <th>Pass</th>			
+	  </tr>
+	</thead>
+	<tbody> @for(p <- bb.accounts){
+			  <tr>
+			    <td>@p.id</td>
+			    <td>@p.sum</td>
+			    <td>@p.client</td>
+			    <td>@p.entity</td>
+			    <td>@p.isClient</td>
+			    <td>@p.pass</td>		  
+			    }
+			  </tr>
+			  
+	</tbody>
+      </table>
+    </div>    
+  </div>
+  <div class="tab-pane" id="clients">
+
+    <div class="table-responsive">
+      <table class="table table-striped">
+	<thead>
+	  <tr>
+	    <th>Id</th>
+	    <th>Name</th>
+	    <th>location</th>
+	  </tr>
+	  
+	</thead>
+	<tbody> @for(p <- bb.clients){
+			  <tr>
+			    <td>@p.id</td>
+			    <td>@p.name</td>
+			    <td>@p.location</td>
+			    }
+			  </tr>
+
+	</tbody>
+      </table>
+    </div>
+  </div>  
+</div>
+
+
+
+
+}{
+<li><a href="/">Home</a></li>
+<li><a href="#">Overview</a></li>
+<li><a href="#">Cat 1</a></li>
+<li><a href="#">Cat 2</a></li>
+<li><a href="#">Cat 3</a></li>
+<li><a href="#">Cat 4</a></li>
+<li class="active"><a href="/generate">Database <span class="sr-only">(current)</span> </a></li>
+}()
+

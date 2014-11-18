@@ -1,19 +1,31 @@
 package controllers
 
+import play.api.templates._
 import play.api._
 import play.api.mvc._
 import util.Random
 import collection.mutable.Seq
 
-object Application extends Controller {
+object Application extends Controller with Secured{
 
-  def index = Action {
-    Ok(views.html.index("Your new application is ready."))
+  def index = withUser { username => implicit request =>
+    Ok(views.html.index("Overview", username))
   }
 
-  def generate(seed: Int) =
-    Action {
-      Ok(views.html.generate(Generate.gen(seed)))
+  def transactions = withUser { username => implicit request =>
+    Ok(views.html.transactions(username))
+  }
+
+  def overview = withUser { username => implicit request =>
+    Ok(views.html.overview(username))
+  }
+
+  def generate(seed: String) =
+    withAdmin { username => implicit request =>
+      if (seed != "" || Generate.baseBank == null)
+        Generate.gen(seed.hashCode())
+
+      Ok(views.html.generate(Generate.baseBank)(username))
     }
 
 }
@@ -31,9 +43,12 @@ case class BaseBank(banks:Seq[Bank], branches:Seq[Branch], sends:Seq[Send], rece
 
 object Generate {
 
+
+  var baseBank:BaseBank = _
+
   val N_ACC = 1000
   val N_BR = 10
-  val N_TRANS = 100
+  val N_TRANS = 10000
 
   val banksName = List("Crédit Lyonnais", "Crédit Agricole", "Société Générale")
 
@@ -53,6 +68,7 @@ object Generate {
   val firstNames = Seq("Ruben", "Élodie", "Hannah", "Marianne", "Louis", "Jean", "Fernando")
   val lastNames = Seq("Fiszel", "Brito", "Bamberger", "Weil", "Weinberg", "Rotschild")
   val entityFields = Seq("High-Tech", "Mining", "Supermarket")
+
 
   def gen(seed: Int) = {
 
@@ -116,8 +132,8 @@ object Generate {
       val from =  rd.nextInt(N_ACC)
       val to =  rd.nextInt(N_ACC)
       val ts = genTimestamp()
-      val sd = Send(idTr,from, am, to, ts)      
-      val rc = Receive(idTr,from, am, to, ts)      
+      val sd = Send(idTr, to, am, from, ts)      
+      val rc = Receive(idTr, from, am, to, ts)      
       sends :+= sd
       receives :+= rc
       (sd,rc)
@@ -159,7 +175,7 @@ object Generate {
       val sum = receives.filter(_.account == idAcc).map(_.amount).sum - sends.filter(_.account == idAcc).map(_.amount).sum
       val pass = idAcc.toString + "pass"
       val b = rd.nextInt(100) <= 1
-      if (b) {
+      if (!b) {
         val acc = Account(idAcc, sum, Some(rd.nextInt(clients.length)), None, true, pass)
         accounts :+= acc
         acc
@@ -174,10 +190,11 @@ object Generate {
     (1 to N_BR).foreach(_ => genBranch())
     (1 to (N_ACC - N_ENT)).foreach(_ => genClient())
     (1 to N_ENT).foreach(_ => genEntity())
+    (1 to N_TRANS).foreach(_ => genTrans())    
     (1 to N_ACC).foreach(_ => genAcc())
-    (1 to N_TRANS).foreach(_ => genTrans())
 
-    BaseBank(banks, branches, sends, receives, clients, entities, accounts, addresses)
+    baseBank = BaseBank(banks, branches, sends, receives, clients, entities, accounts, addresses)
+    baseBank
   }
 
 
