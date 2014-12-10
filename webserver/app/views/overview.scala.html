@@ -2,23 +2,57 @@
 
 @main("Overview", acc) {
 
-          <div class="row placeholders">
-            <div class="col-xs-6 col-sm-4 placeholder">
-	      <canvas id="myChart" width="400" height="400"></canvas>
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>	      
-            </div>
-            <div class="col-xs-6 col-sm-4 placeholder">
-	      <canvas id="myChart2" width="400" height="400"></canvas>	      
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-4 placeholder">
-	      <canvas id="myChart3" width="400" height="400"></canvas>	      
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-          </div>
+
+<h2>Title 1</h2>
+<div class="jumbotron">
+  <div class="row">
+    <div class="col-lg-3">    
+      <h4>Parameters</h4> 
+      <form name="a" >
+	<label>i</label>
+	<input type="text" name="i" id="r1" value="12"> <br/>
+	<label>j</label>
+	<input type="text" name="j" id="r2" value="21">
+      </form>
+      <br/>
+      <h4 class="media-heading">Statistics 2</h4>
+      blawe wop kepwq epewo krpewkt poewkpot pwek pewok rpowek porkweo krpewkr powke prkewo krpew okp
+      <br/><br/>            
+    </div>      
+    <div class="col-lg-9">          
+      <div id="chart-a" style="min-width:400px; height: 600px; margin: 0 auto"></div>
+    </div>      
+  </div>
+</div>
+
+
+
+
+
+
+<h2>Title 2</h2>
+<div class="jumbotron">
+  <div class="row">
+    <div class="col-lg-3">    
+      <h4>Parameters</h4> 
+      <form name="b" >
+	<label>i</label>
+	<input type="text" name="i" id="r1" value="12"> <br/>
+	<label>j</label>
+	<input type="text" name="j" id="r2" value="21">
+      </form>
+      <br/>
+      <h4 class="media-heading">Statistics 2</h4>
+      blawe wop kepwq epewo krpewkt poewkpot pwek pewok rpowek porkweo krpewkr powke prkewo krpew okp
+      <br/><br/>            
+    </div>      
+    <div class="col-lg-9">          
+      <div id="chart-b" style="min-width:400px; height: 600px; margin: 0 auto"></div>
+    </div>      
+  </div>
+</div>
+</div>
+
 
 
 
@@ -26,42 +60,68 @@
 
 <li><a href="/">Home</a></li>
 <li class="active"><a href="/overview">Overview <span class="sr-only">(current)</span> </a></li>
-<li><a href="/transactions">Transactions</a></li>
+<li><a href="#">Cat 1</a></li>
+<li><a href="#">Cat 2</a></li>
+<li><a href="/generate">Generate</a></li>
 
 }{
 <script>
+  
   var data = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
-    datasets: [
-        {
-            label: "My First dataset",
-            fillColor: "rgba(220,220,220,0.2)",
-            strokeColor: "rgba(220,220,220,1)",
-            pointColor: "rgba(220,220,220,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(220,220,220,1)",
-            data: [65, 59, 80, 81, 56, 55, 40]
-        },
-        {
-            label: "My Second dataset",
-            fillColor: "rgba(151,187,205,0.2)",
-            strokeColor: "rgba(151,187,205,1)",
-            pointColor: "rgba(151,187,205,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(151,187,205,1)",
-            data: [28, 48, 40, 19, 86, 27, 90]
-        }
-    ]
-};
+  chart: {
+  zoomType: 'x',
+  type: 'spline'
+  },
+  xAxis: {
+  categories: []
+  },
+  series: [{
+  data: []
+  }]
+  };
+  
+  function gen(p,str, d) {
 
-  var ctx = document.getElementById("myChart").getContext("2d");
-  var ctx2 = document.getElementById("myChart3").getContext("2d");
-  var ctx3 = document.getElementById("myChart2").getContext("2d");  
-  var myNewChart = new Chart(ctx).Line(data);
-  var myNewChart2 = new Chart(ctx2).Line(data);
-  var myNewChar3t = new Chart(ctx3).Line(data);  
+  var f = 'form[name='+str+']';
+
+   if(typeof(d)==='undefined') var d = jQuery.extend(true, {}, data);
+
+  $(f).submit(function (e) {
+  e.preventDefault();
+  })
+
+  $("#chart-"+str).highcharts(d)
+
+  function showValues() {
+  var ser = $(f).serialize();
+  $.getJSON( "/" + p +"?"+ser, function( ndata ) {
+  var chart = $("#chart-"+str).highcharts();
+  if (chart.series[1]) {
+     chart.series[1].remove();
+  }
+  chart.series[0].remove();
+  if (ndata.labels) {  
+  chart.xAxis[0].setCategories(ndata.labels);
+  }
+  chart.addSeries({data: ndata.a});
+  if (ndata.b) {
+  chart.addSeries({data: ndata.b});
+  }
+  chart.redraw();
+  });  
+  }
+  
+  $(f + " > input[type='text']" ).change( function() { showValues() });
+  showValues();
+  }
+
+
+
+  gen("json", "a");
+  gen("json2", "b");      
+
+  
+  
 </script>
 
 }

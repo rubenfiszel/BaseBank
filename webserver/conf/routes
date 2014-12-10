@@ -4,12 +4,15 @@
 
 # Home page
 GET     /				 controllers.Application.index
-GET     /auth                           controllers.Auth.authenticate
+GET     /auth          	                 controllers.Auth.authenticate
 GET     /login                           controllers.Auth.login
-GET     /logout                           controllers.Auth.logout
+GET     /logout                          controllers.Auth.logout
 GET     /generate  	   		 controllers.Application.generate(seed: String ?= "")
 GET     /transactions  	   		 controllers.Application.transactions
-GET     /overview  	   		 controllers.Application.overview
+GET     /admin-overview 		 controllers.Application.admin_overview
+GET     /user-overview  	   	 controllers.Application.user_overview
+GET     /json 	 	   		 controllers.Application.json(i: Int, j:Int)
+GET     /json2  	   		 controllers.Application.json2(i: Int, j:Int)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
