@@ -3,20 +3,14 @@
 @main("Overview", acc) {
 
 
-<h2>Title 1</h2>
+<h2>AccountsMostActivity</h2>
 <div class="jumbotron">
   <div class="row">
     <div class="col-lg-3">    
-      <h4>Parameters</h4> 
-      <form name="a" >
-	<label>i</label>
-	<input type="text" name="i" id="r1" value="12"> <br/>
-	<label>j</label>
-	<input type="text" name="j" id="r2" value="21">
-      </form>
       <br/>
-      <h4 class="media-heading">Statistics 2</h4>
-      blawe wop kepwq epewo krpewkt poewkpot pwek pewok rpowek porkweo krpewkr powke prkewo krpew okp
+      <h4 class="media-heading">AccountsMostActivity</h4>
+ What are the accounts with most activity in the last 30 days? 
+This procedure can also be adapted to receive a Branch ID or a AccountID (Statement Generation) 
       <br/><br/>            
     </div>      
     <div class="col-lg-9">          
@@ -26,40 +20,164 @@
 </div>
 
 
-
-
-
-
-<h2>Title 2</h2>
+<h2>AccountsByBranch</h2>
 <div class="jumbotron">
   <div class="row">
     <div class="col-lg-3">    
       <h4>Parameters</h4> 
       <form name="b" >
-	<label>i</label>
-	<input type="text" name="i" id="r1" value="12"> <br/>
-	<label>j</label>
-	<input type="text" name="j" id="r2" value="21">
+	<label>BranchID</label>
+	<input type="text" name="i" id="r1" value="1"> <br/>
       </form>
       <br/>
-      <h4 class="media-heading">Statistics 2</h4>
-      blawe wop kepwq epewo krpewkt poewkpot pwek pewok rpowek porkweo krpewkr powke prkewo krpew okp
+      <h4 class="media-heading">AccountsByBranch</h4>
+      How many accounts does my branch manage? 
+      This procedure can also be adapted to generate a bankwise report of the branches and their clients       
       <br/><br/>            
     </div>      
     <div class="col-lg-9">          
-      <div id="chart-b" style="min-width:400px; height: 600px; margin: 0 auto"></div>
+      <h2><div id="b"> </div></h2>
     </div>      
   </div>
 </div>
+
+<h2>MoneyByBranch</h2>
+<div class="jumbotron">
+  <div class="row">
+    <div class="col-lg-3">    
+      <h4>Parameters</h4> 
+      <form name="c" >
+	<label>BranchID</label>
+	<input type="text" name="i" id="r1" value="1"> <br/>
+      </form>
+      <br/>
+      <h4 class="media-heading">MoneyByBranch</h4>
+      How much money does my branch manage?  
+      This procedure can also be adapted to generate a bankwise report of the branches and their money.
+      <br/><br/>            
+    </div>      
+    <div class="col-lg-9">          
+      <h2><div id="c"> </div></h2>
+    </div>      
+  </div>
+</div>
+
+<h2>ClientsByBranch</h2>
+<div class="jumbotron">
+  <div class="row">
+    <div class="col-lg-3">    
+      <h4>Parameters</h4> 
+      <form name="d" >
+	<label>BranchID</label>
+	<input type="text" name="i" id="r1" value="1"> <br/>
+      </form>
+      <br/>
+      <h4 class="media-heading">ClientsByBranch</h4>
+      How many clients does my branch manage?  
+      This procedure can also be adapted to generate a bankwise report of the branches and their clients 
+      <br/><br/>            
+    </div>      
+    <div class="col-lg-9">          
+      <h2><div id="d"> </div></h2>
+    </div>      
+  </div>
 </div>
 
 
+
+
+<h2>MonthlyExpenditureByBranch</h2>
+<div class="jumbotron">
+  <div class="row">
+    <div class="col-lg-3">    
+      <h4>Parameters</h4> 
+      <form name="e" >
+	<label>BranchID</label>
+	<input type="text" name="i" id="r1" value="1"> <br/>
+      </form>
+      <br/>
+      <h4 class="media-heading">MonthlyExpenditureByBranch</h4>
+  What time of the year do my clients spend more money?  
+  This query returns all the last 12 months expenditures by branch's clients
+      <br/><br/>            
+    </div>      
+    <div class="col-lg-9">          
+      <div id="chart-e" style="min-width:400px; height: 600px; margin: 0 auto"></div>
+    </div>      
+  </div>
+</div>
+
+
+<h2>NegativeClients</h2>
+<div class="jumbotron">
+  <div class="row">
+    <div class="col-lg-3">    
+      <br/>
+      <h4 class="media-heading">NegativeClients</h4>
+      Are there clients with a negative balance?  
+      Use this procedure to list all clients with negative balances on their accounts. A variation of this query can be to filter the clients by branch 
+
+      <br/><br/>            
+    </div>      
+    <div class="col-lg-9">          
+      <div id="chart-f" style="min-width:400px; height: 600px; margin: 0 auto"></div>
+    </div>      
+  </div>
+</div>
+
+<h2>BranchMoney</h2>
+<div class="jumbotron">
+  <div class="row">
+    <div class="col-lg-3">    
+      <br/>
+      <h4 class="media-heading">BranchMoney</h4>
+  Which branch manages more money? 
+  This query returns how much money each branch manages 
+      <br/><br/>            
+    </div>      
+    <div class="col-lg-9">          
+      <div id="chart-g" style="min-width:400px; height: 600px; margin: 0 auto"></div>
+    </div>      
+  </div>
+</div>
+
+<h2>NegativeClientsByBranch</h2>
+<div class="jumbotron">
+  <div class="row">
+    <div class="col-lg-3">    
+      <br/>
+      <h4 class="media-heading">NegativeClientsByBranch</h4>
+  Which branch has more clients with negative balance?  
+  Use this procedure to return a list of the count of negative balance accounts by branch  
+      <br/><br/>            
+    </div>      
+    <div class="col-lg-9">          
+      <div id="chart-h" style="min-width:400px; height: 600px; margin: 0 auto"></div>
+    </div>      
+  </div>
+</div>
+
+<h2>WorkExpenditure</h2>
+<div class="jumbotron">
+  <div class="row">
+    <div class="col-lg-3">    
+      <br/>
+      <h4 class="media-heading">WorkExpenditure</h4>
+  Do people that work on a field spend more money on their field?  
+  This procedure returns the percentage of expenditure of a client in its field of work  
+      <br/><br/>            
+    </div>      
+    <div class="col-lg-9">          
+      <div id="chart-i" style="min-width:400px; height: 600px; margin: 0 auto"></div>
+    </div>      
+  </div>
+</div>
 
 
 }{
 
 <li><a href="/">Home</a></li>
-<li class="active"><a href="/overview">Overview <span class="sr-only">(current)</span> </a></li>
+<li class="active"><a href="/admin-overview">Overview <span class="sr-only">(current)</span> </a></li>
 <li><a href="#">Cat 1</a></li>
 <li><a href="#">Cat 2</a></li>
 <li><a href="/generate">Generate</a></li>
@@ -115,10 +233,64 @@
   showValues();
   }
 
+  
+  function gentxtnofix(p,str) {
+
+  var f = 'form[name='+str+']';
+
+  $(f).submit(function (e) {
+  e.preventDefault();
+  })
+
+  function showValues() {
+  var ser = $(f).serialize();
+  $.getJSON( "/" + p +"?"+ser, function( ndata ) {
+  $("#"+str).text(ndata.a[0])
+  });  
+  }
+  
+  $(f + " > input[type='text']" ).change( function() { showValues() });
+  showValues();
+  }
+
+  function genfix(p,str, d) {
 
 
-  gen("json", "a");
-  gen("json2", "b");      
+  if(typeof(d)==='undefined') var d = jQuery.extend(true, {}, data);
+
+  $("#chart-"+str).highcharts(d)
+
+  function showValues() {
+  $.getJSON( "/" + p, function( ndata ) {
+  var chart = $("#chart-"+str).highcharts();
+  if (chart.series[1]) {
+     chart.series[1].remove();
+  }
+  chart.series[0].remove();
+  if (ndata.labels) {  
+  chart.xAxis[0].setCategories(ndata.labels);
+  }
+  chart.addSeries({data: ndata.a});
+  if (ndata.b) {
+  chart.addSeries({data: ndata.b});
+  }
+  chart.redraw();
+  });  
+  }
+  
+  showValues();
+  }
+
+  
+  genfix("jsonAMA", "a");
+  gentxtnofix("jsonABB", "b");
+  gentxtnofix("jsonMBB", "c");
+  gentxtnofix("jsonCBB", "d");
+  gen("jsonMEBB", "e");
+  genfix("jsonNC", "f");
+  genfix("jsonBM", "g");
+  genfix("jsonNCBB", "h");
+  genfix("jsonWE", "i");  
 
   
   

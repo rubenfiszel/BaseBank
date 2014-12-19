@@ -130,7 +130,7 @@ object Application extends Controller with Secured{
     val r = SQL(s"call PaymentsOften('$i');")().collect {
       case Row(_, Some(a), b ) => (a.toString, b.toString.toFloat)
     }.toList.unzip
-    println(r)
+
 
     Json.obj(
       "labels" -> Json.toJson(r._1),
@@ -144,12 +144,11 @@ object Application extends Controller with Secured{
     }  
 
 
-    def jsonVSP(i:String): JsValue = {
+  def jsonVSP(i:String): JsValue = {
     val r = SQL(s"call StatementPrediction('$i');")().collect {
       case Row(a, Some(b) ) => (a.toString, b.toString.toFloat)
-      case _ => ("", 4f)
     }.toList.unzip
-    println(r)
+
 
     Json.obj(
       "labels" -> Json.toJson(r._1),
@@ -157,13 +156,83 @@ object Application extends Controller with Secured{
     )
   }
 
-  def jsonSP = 
+  def jsonSP =
     withUser { username => implicit request =>
       Ok(jsonVSP(username.acc))
+    }
+
+
+
+
+  def jsonVAMA(): JsValue = {
+    val r = SQL(s"call AccountsMostActivity();")().collect {
+      case Row(Some(a), Some(b) ) => (a.toString, b.toString.toFloat)
+    }.toList.unzip
+
+    Json.obj(
+      "labels" -> Json.toJson(r._1),
+      "a" -> Json.toJson(r._2)
+    )
+  }
+
+  def jsonVABB(i: Int): JsValue = {
+    val r = SQL(s"call AccountsByBranch($i);")().collect {
+      case Row(a, b ) => (a.toString, b.toString.toFloat)
+    }.toList.unzip
+
+    Json.obj(
+      "labels" -> Json.toJson(r._1),
+      "a" -> Json.toJson(r._2)
+    )
+  }  
+  
+
+  def jsonABB(i:Int) =
+    withAdmin { username => implicit request =>
+      Ok(jsonVABB(i))
+    }
+
+  def jsonCBB(i:Int) =
+    withAdmin { username => implicit request =>
+      Ok(jsonVABB(i))      
+    }
+
+  def jsonMBB(i:Int) =
+    withAdmin { username => implicit request =>
+      Ok(jsonVABB(i))            
+    }
+
+  def jsonMEBB(i:Int) =
+    withAdmin { username => implicit request =>
+      Ok(jsonVAMA())            
     }  
 
+  def jsonAMA =
+    withAdmin { username => implicit request =>
+      Ok(jsonVAMA())
+    }
 
- 
+  def jsonNC =
+    withAdmin { username => implicit request =>
+      Ok(jsonVAMA())
+    }
+
+  def jsonBM =
+    withAdmin { username => implicit request =>
+      Ok(jsonVAMA())
+    }    
+
+  def jsonNCBB =
+    withAdmin { username => implicit request =>
+      Ok(jsonVAMA())
+    }
+
+  def jsonWE =
+    withAdmin { username => implicit request =>
+      Ok(jsonVAMA())
+    }    
+
+   
 
 
 

@@ -25,8 +25,8 @@ object Generate {
   var bef = 0
 
   val N_ACC = 20
-  val N_BR = 10
-  val N_TRANS = 50000
+  val N_BR = 3
+  val N_TRANS = 10000
   val RATIO_TR_IN = 0.8
   val RATIO_SAL = 0.2
   val RATIO_TR = 0.1
@@ -86,7 +86,7 @@ object Generate {
     val simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss")
 
     def genTimestamp() = {
-      val nt = rd.nextInt(((NOW - timestamp)/1000).toInt) + timestamp
+      val nt = rd.nextInt(((NOW - timestamp)/400).toInt) + timestamp
       timestamp = nt
       simpleDateFormat.format(new Date(new Timestamp(nt*1000).getTime()))
     }

@@ -17,6 +17,16 @@ GET     /jsonEBF	  	   	 controllers.Application.jsonEBF
 GET     /jsonME			   	 controllers.Application.jsonME
 GET     /jsonPO			   	 controllers.Application.jsonPO
 GET     /jsonSP			   	 controllers.Application.jsonSP
+GET     /jsonAMA		   	 controllers.Application.jsonAMA
+GET     /jsonABB		   	 controllers.Application.jsonABB(i: Int)
+GET     /jsonCBB		   	 controllers.Application.jsonCBB(i: Int)
+GET     /jsonMBB		   	 controllers.Application.jsonMBB(i: Int)
+GET     /jsonMEBB		   	 controllers.Application.jsonMEBB(i: Int)
+GET     /jsonNC			   	 controllers.Application.jsonNC
+GET     /jsonBM			   	 controllers.Application.jsonBM
+GET     /jsonNCBB		   	 controllers.Application.jsonNCBB
+GET     /jsonWE		   		 controllers.Application.jsonWE
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
