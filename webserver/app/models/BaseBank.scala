@@ -118,7 +118,7 @@ object Generate {
         idPa += 1
         val iban = rdE(accounts).iban
         val to = rd.nextInt(N_ENT)
-        am = am/10
+        am = am/3
         payments :+= Payment(idPa, iban, am, to, ts)
 
       } else if (rd.nextDouble() < (RATIO_PAY + RATIO_SAL)) {

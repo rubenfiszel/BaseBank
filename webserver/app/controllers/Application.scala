@@ -110,7 +110,20 @@ object Application extends Controller with Secured{
 
   def jsonVME(i:String): JsValue = {
     val r = SQL(s"call MonthlyExpenditure('$i');")().collect {
-      case Row(_, Some(a), Some(b) ) => (a.toString, b.toString.toFloat )
+      case Row(_, Some(a), Some(b)) => (a.toString, b.toString.toFloat )
+    }.toList.unzip
+    println(r)
+
+    Json.obj(
+      "labels" -> Json.toJson(r._1),
+      "a" -> Json.toJson(r._2)
+    )
+  }
+
+
+  def jsonVMEBB(i:Int): JsValue = {
+    val r = SQL(s"call MonthlyExpenditureByBranch('$i');")().collect {
+      case Row(Some(a),Some(b) ) => (a.toString, b.toString.toFloat )
     }.toList.unzip
     println(r)
 
@@ -175,6 +188,62 @@ object Application extends Controller with Secured{
     )
   }
 
+
+
+
+  def jsonVNC(): JsValue = {
+    val r = SQL(s"call NegativeClients();")().collect {
+      case Row(a, _, _, Some(b) ) => (a.toString, b.toString.toFloat)
+      case a@_ => { println(a); ("", 4f) }
+    }.toList.unzip
+
+    Json.obj(
+      "labels" -> Json.toJson(r._1),
+      "a" -> Json.toJson(r._2)
+    )
+  }
+
+
+
+  def jsonVBM(): JsValue = {
+    val r = SQL(s"call BranchMoney();")().collect {
+      case Row(a, Some(b) ) => (a.toString, b.toString.toFloat)
+      case a@_ => { println(a); ("", 4f) }
+    }.toList.unzip
+
+    Json.obj(
+      "labels" -> Json.toJson(r._1),
+      "a" -> Json.toJson(r._2)
+    )
+  }
+
+  def jsonVWE(): JsValue = {
+    val r = SQL(s"call WorkExpenditure();")().collect {
+      case Row(a, Some(b) ) => (a.toString, b.toString.toFloat)
+      case a@_ => { println(a); ("", 4f) }
+    }.toList.unzip
+
+    Json.obj(
+      "labels" -> Json.toJson(r._1),
+      "a" -> Json.toJson(r._2)
+    )
+  }  
+
+
+  def jsonVNCBB(): JsValue = {
+    val r = SQL(s"call NegativeClientsByBranch();")().collect {
+      case Row(a,  b ) => (a.toString, b.toString.toFloat)
+      case a@_ => { println(a); ("", 4f) }
+    }.toList.unzip
+
+    Json.obj(
+      "labels" -> Json.toJson(r._1),
+      "a" -> Json.toJson(r._2)
+    )
+  }  
+  
+  
+
   def jsonVABB(i: Int): JsValue = {
     val r = SQL(s"call AccountsByBranch($i);")().collect {
       case Row(a, b ) => (a.toString, b.toString.toFloat)
@@ -184,7 +253,31 @@ object Application extends Controller with Secured{
       "labels" -> Json.toJson(r._1),
       "a" -> Json.toJson(r._2)
     )
-  }  
+  }
+
+
+  def jsonVMBB(i: Int): JsValue = {
+    val r = SQL(s"call MoneyByBranch($i);")().collect {
+      case Row(a, Some(b)) => (a.toString, b.toString.toFloat)
+    }.toList.unzip
+
+    Json.obj(
+      "labels" -> Json.toJson(r._1),
+      "a" -> Json.toJson(r._2)
+    )
+  }
+
+
+  def jsonVCBB(i: Int): JsValue = {
+    val r = SQL(s"call ClientsByBranch($i);")().collect {
+      case Row(a, b ) => (a.toString, b.toString.toFloat)
+    }.toList.unzip
+
+    Json.obj(
+      "labels" -> Json.toJson(r._1),
+      "a" -> Json.toJson(r._2)
+    )
+  }    
   
 
   def jsonABB(i:Int) =
@@ -194,17 +287,17 @@ object Application extends Controller with Secured{
 
   def jsonCBB(i:Int) =
     withAdmin { username => implicit request =>
-      Ok(jsonVABB(i))      
+      Ok(jsonVCBB(i))      
     }
 
   def jsonMBB(i:Int) =
     withAdmin { username => implicit request =>
-      Ok(jsonVABB(i))            
+      Ok(jsonVMBB(i))            
     }
 
   def jsonMEBB(i:Int) =
     withAdmin { username => implicit request =>
-      Ok(jsonVAMA())            
+      Ok(jsonVMEBB(i))            
     }  
 
   def jsonAMA =
@@ -214,22 +307,22 @@ object Application extends Controller with Secured{
 
   def jsonNC =
     withAdmin { username => implicit request =>
-      Ok(jsonVAMA())
+      Ok(jsonVNC())
     }
 
   def jsonBM =
     withAdmin { username => implicit request =>
-      Ok(jsonVAMA())
+      Ok(jsonVBM())
     }    
 
   def jsonNCBB =
     withAdmin { username => implicit request =>
-      Ok(jsonVAMA())
+      Ok(jsonVNCBB())
     }
 
   def jsonWE =
     withAdmin { username => implicit request =>
-      Ok(jsonVAMA())
+      Ok(jsonVWE())
     }    
 
    
