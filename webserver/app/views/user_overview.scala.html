@@ -1,0 +1,224 @@
+@(acc: AccountAuth)
+
+@main("Overview", acc) {
+
+
+<h2>Title 1</h2>
+<div class="jumbotron">
+  <div class="row">
+    <div class="col-lg-3">    
+      <h4>Parameters</h4> 
+      <form name="a" >
+	<label>i</label>
+	<input type="text" name="i" id="r1" value="12"> <br/>
+	<label>j</label>
+	<input type="text" name="j" id="r2" value="21">
+      </form>
+      <br/>
+      <h4 class="media-heading">Statistics 2</h4>
+      blawe wop kepwq epewo krpewkt poewkpot pwek pewok rpowek porkweo krpewkr powke prkewo krpew okp
+      <br/><br/>            
+    </div>      
+    <div class="col-lg-9">          
+      <div id="chart-a" style="min-width:400px; height: 600px; margin: 0 auto"></div>
+    </div>      
+  </div>
+</div>
+
+
+
+
+
+
+<h2>ExpenditureByFields</h2>
+<div class="jumbotron">
+  <div class="row">
+    <div class="col-lg-3">    
+      <br/>
+      <h4 class="media-heading">ExpenditureByFields</h4>
+      Which category do I spend more money
+      This query shows an account expenditure grouped by fields. Maybe a Pie Chart would be nice to show this information. 
+      
+      <br/><br/>            
+    </div>      
+    <div class="col-lg-9">          
+      <div id="chart-b" style="min-width:400px; height: 600px; margin: 0 auto"></div>
+    </div>      
+  </div>
+</div>
+
+
+
+<h2>MonthlyExpenditures</h2>
+<div class="jumbotron">
+  <div class="row">
+    <div class="col-lg-3">    
+      <br/>
+      <h4 class="media-heading">MonthlyExpenditures</h4>
+      What time of the year do I spend more money?  
+      This query returns all the last 12 months expenditures.        
+      <br/><br/>            
+    </div>      
+    <div class="col-lg-9">          
+      <div id="chart-c" style="min-width:400px; height: 600px; margin: 0 auto"></div>
+    </div>      
+  </div>
+</div>
+
+
+
+<h2>PaymentsOften</h2>
+<div class="jumbotron">
+  <div class="row">
+    <div class="col-lg-3">    
+      <br/>
+      <h4 class="media-heading">PaymentsOften</h4>
+      In which entity do I often spend more money?  
+      This query returns the count of payments to a entity by a certain account in the last months
+	thus showing in what entities the client spends money more often (not more money) 
+      <br/><br/>            
+    </div>      
+    <div class="col-lg-9">          
+      <div id="chart-d" style="min-width:400px; height: 600px; margin: 0 auto"></div>
+    </div>      
+  </div>
+</div>
+
+
+
+<h2>StatementPrediction</h2>
+<div class="jumbotron">
+  <div class="row">
+    <div class="col-lg-3">    
+      <br/>
+      <h4 class="media-heading">StatementPrediction</h4>
+      Based on last month’s expenditure and earns, how much will be my account balance in the end of the month?  
+      Procedure that estimates the client's balance in the end of the month based on last month's expenditure pattern  
+
+      <br/><br/>            
+    </div>      
+    <div class="col-lg-9">          
+      <h2><div id="e"></div></h2>
+    </div>      
+  </div>
+</div>
+
+
+
+
+
+}{
+
+<li><a href="/">Home</a></li>
+<li class="active"><a href="/user-overview">Report</a></li>
+<li><a href="/transactions">Transactions <span class="sr-only">(current)</span> </a></li>
+
+}{
+<script>
+  
+  var data = {
+  chart: {
+  zoomType: 'x',
+  type: 'spline'
+  },
+  xAxis: {
+  categories: []
+  },
+  series: [{
+  data: []
+  }]
+  };
+  
+  function gen(p,str, d) {
+
+  var f = 'form[name='+str+']';
+
+   if(typeof(d)==='undefined') var d = jQuery.extend(true, {}, data);
+
+  $(f).submit(function (e) {
+  e.preventDefault();
+  })
+
+  $("#chart-"+str).highcharts(d)
+
+  function showValues() {
+  var ser = $(f).serialize();
+  $.getJSON( "/" + p +"?"+ser, function( ndata ) {
+  var chart = $("#chart-"+str).highcharts();
+  if (chart.series[1]) {
+     chart.series[1].remove();
+  }
+  chart.series[0].remove();
+  if (ndata.labels) {  
+  chart.xAxis[0].setCategories(ndata.labels);
+  }
+  chart.addSeries({data: ndata.a});
+  if (ndata.b) {
+  chart.addSeries({data: ndata.b});
+  }
+  chart.redraw();
+  });  
+  }
+  
+  $(f + " > input[type='text']" ).change( function() { showValues() });
+  showValues();
+  }
+
+
+  function genfix(p,str, d) {
+
+
+  if(typeof(d)==='undefined') var d = jQuery.extend(true, {}, data);
+
+  $("#chart-"+str).highcharts(d)
+
+  function showValues() {
+  $.getJSON( "/" + p, function( ndata ) {
+  var chart = $("#chart-"+str).highcharts();
+  if (chart.series[1]) {
+     chart.series[1].remove();
+  }
+  chart.series[0].remove();
+  if (ndata.labels) {  
+  chart.xAxis[0].setCategories(ndata.labels);
+  }
+  chart.addSeries({data: ndata.a});
+  if (ndata.b) {
+  chart.addSeries({data: ndata.b});
+  }
+  chart.redraw();
+  });  
+  }
+  
+  showValues();
+  }
+
+  
+  function gentxt(p,str) {
+
+
+
+
+  function showValues() {
+  $.getJSON( "/" + p, function( ndata ) {
+  $("#"+str).text(ndata.a)
+  });  
+  }
+  
+  showValues();
+  }
+
+
+
+  //gen("json", "a");
+  genfix("jsonEBF", "b");
+  genfix("jsonME", "c");
+  genfix("jsonPO", "d");
+  gentxt("jsonSP", "e");    
+  
+  
+  
+</script>
+
+}
+

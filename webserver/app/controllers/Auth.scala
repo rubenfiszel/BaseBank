@@ -5,9 +5,14 @@ import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
 import views._
+import play.api.Play.current
+import play.api.db._
+import anorm._
 
 object Auth extends Controller {
 
+  implicit val connection = DB.getConnection()
+  
   val loginForm = Form(
     tuple(
       "account" -> text,
@@ -18,7 +23,13 @@ object Auth extends Controller {
   )
 
   def check(username: String, password: String) = {
-    (username == "admin" && password == "1234") || true //if account exist
+    (username == "admin" && password == "1234") || {
+      val a = SQL(s"SELECT * FROM Account WHERE Iban='$username';")().collect {
+        case Row(_,_,_,_,Some(p)) => p.toString
+      }.toList
+      a.headOption.filter(_ == password).isDefined
+    }
+    
   }
 
   def login = Action { implicit request =>

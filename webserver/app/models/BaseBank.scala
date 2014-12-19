@@ -24,9 +24,9 @@ object Generate {
   var baseBank:BaseBank = _
   var bef = 0
 
-  val N_ACC = 1000
+  val N_ACC = 20
   val N_BR = 10
-  val N_TRANS = 10000
+  val N_TRANS = 50000
   val RATIO_TR_IN = 0.8
   val RATIO_SAL = 0.2
   val RATIO_TR = 0.1
@@ -36,7 +36,7 @@ object Generate {
 
   val N_ENT = entityNames.length
 
-  val NOW:Long = 1416111260
+  val NOW:Long = 1418982927
 
   def rdE[A](s:Seq[A])(implicit rd:Random):A = s(rd.nextInt(s.length))
 
@@ -46,6 +46,7 @@ object Generate {
   val firstNames = Seq("Ruben", "Élodie", "Hannah", "Marianne", "Louis", "Jean", "Fernando", "André", "Gabriel")
   val lastNames = Seq("Fiszel", "Brito", "Bamberger", "Weil", "Weinberg", "Rotschild", "Alvim", "Campos")
   val entityFields = Seq("High-Tech", "Mining", "Supermarket")
+  val passes = Seq("a", "b", "c", "d")  
 
   def gen(seed: Int) = {
 
@@ -64,12 +65,14 @@ object Generate {
 
     var timestamp:Long = 784959260 // 1994, 16 November, 5:14am, 20sec
 
-    def genIban() = {      
+    def genIban() = {
+      val iban = 
       (IndexedSeq.fill(2){ (rd.nextInt(25) + 65).toChar} ++
         IndexedSeq.fill(2){ (rd.nextInt(9) + 49).toChar}).mkString("") + " " +
       IndexedSeq.fill(4){ (rd.nextInt(9) + 49).toChar}.mkString("") + " " +
       IndexedSeq.fill(4){ (rd.nextInt(9) + 49).toChar}.mkString("") + " " +
       IndexedSeq.fill(4){ (rd.nextInt(9) + 49).toChar}.mkString("")
+      iban
 
     }
 
@@ -109,12 +112,13 @@ object Generate {
     var idSa = -1    
     var idBa = -1    
     def genTrans() = {
-      val am = rd.nextInt(1000) + 1
+      var am = rd.nextInt(1000) + 1
       val ts = genTimestamp()
       if (rd.nextDouble() < RATIO_PAY) {
         idPa += 1
         val iban = rdE(accounts).iban
         val to = rd.nextInt(N_ENT)
+        am = am/10
         payments :+= Payment(idPa, iban, am, to, ts)
 
       } else if (rd.nextDouble() < (RATIO_PAY + RATIO_SAL)) {
@@ -155,6 +159,7 @@ object Generate {
       cl
     }
 
+
     var enN = entityNames
     var idEnt = -1
     def genEntity() = {
@@ -170,9 +175,9 @@ object Generate {
     def genAcc() = {
       val sum = 0
       val iban = genIban()
-      val pass = iban + "pass"
+      val pass = rdE(passes)
       val b = rd.nextInt(100) <= 1
-      val acc = Account(iban, sum, rd.nextInt(N_BR), toSSN(rd.nextInt(N_ACC - N_ENT)), pass)
+      val acc = Account(iban, sum, rd.nextInt(N_BR), rdE(clients).ssn, pass)
       accounts :+= acc
     }
 
@@ -187,7 +192,9 @@ object Generate {
     (1 to N_ACC).foreach(_ => genAcc())    
     (1 to N_TRANS).foreach(_ => genTrans())
     accounts = accounts.map(calcSum(_))
-
+    transferts = transferts.reverse
+    salaries = salaries.reverse
+    payments = payments.reverse    
 
     implicit val connection = DB.getConnection()
 
@@ -195,7 +202,8 @@ object Generate {
 
       val sql =
 """
-truncate table Client;
+SET FOREIGN_KEY_CHECKS = 0; 
+truncate table Clients;
 truncate table Entity;
 truncate table Salary;
 truncate table Transfer;
@@ -203,10 +211,11 @@ truncate table Payment;
 truncate table Account;
 truncate table Branch;
 truncate table Address;
-truncate table Statement
+SET FOREIGN_KEY_CHECKS = 1
 """
 
       sql.split(";")foreach(x=> SQL(x+";").execute())
+
       def load(l:List[List[String]], table:String) = {
         val writer = new PrintWriter(new File("/tmp/data.txt" ))
         writer.write(l.map(_.mkString("\t")).mkString("\n"))
@@ -216,12 +225,12 @@ truncate table Statement
 
       load(entities.map(x => (x.id::x.name::x.field::Nil).map(_.toString)).toList, "Entity")
       load(addresses.map(x => (x.id::x.street::x.city::x.state::x.country::Nil).map(_.toString)).toList, "Address")
-      load(clients.map(x => (x.ssn::x.fname::x.lname::x.location::Nil).map(_.toString)).toList, "Client")
-      load(accounts.map(x => (x.iban::x.client::x.branch::x.sum::x.pass::Nil).map(_.toString)).toList, "Account")
+      load(clients.map(x => (x.ssn::x.fname::x.lname::x.location::Nil).map(_.toString)).toList, "Clients")
       load(branches.map(x => (x.id::x.location::Nil).map(_.toString)).toList, "Branch")
-      load(salaries.map(x => (x.id::x.from::x.to::x.amount::x.timestamp::Nil).map(_.toString)).toList, "Salary")      
+      load(accounts.map(x => (x.iban::x.client::x.branch::x.sum::x.pass::Nil).map(_.toString)).toList, "Account")      
       load(transferts.map(x => (x.id::x.from::x.to::x.amount::x.timestamp::Nil).map(_.toString)).toList, "Transfer")
       load(payments.map(x => (x.id::x.from::x.to::x.amount::x.timestamp::Nil).map(_.toString)).toList, "Payment")
+      load(salaries.map(x => (x.id::x.to::x.from::x.amount::x.timestamp::Nil).map(_.toString)).toList, "Salary")            
 
 
 

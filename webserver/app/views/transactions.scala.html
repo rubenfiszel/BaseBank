@@ -1,11 +1,11 @@
-@(acc: AccountAuth)
+@(acc: AccountAuth, tr:List[(StatementUI, Float)])
 
 @main("User transactions", acc) {
 
 <h2 class="subheader"> Send money </h2>    
-    <form class="form-inline">
-    <input type="text" class="input-small" placeholder="To">
-    <input type="text" class="input-small" placeholder="Amount">
+    <form action="send" class="form-inline">
+    <input type="text" name="to" class="input-small" placeholder="To">
+    <input type="text" name="amount" class="input-small" placeholder="Amount">
     <button type="submit" class="btn">Send</button>
     </form>
 <h2 class="subheader"> Transactions </h2>    
@@ -13,21 +13,25 @@
   <table class="table table-striped">
     <thead>
       <tr>
-	<th>Id</th>
+	<th>What</th>	
 	<th>Amount</th>
-	<th>To</th>
-	<th>From</th>
-	<th>Timestamp</th>	
+	<th>To</th>	
+	<th>From</th>	
+	<th>Timestamp</th>
+	<th>Balance</th>		
       </tr>      
     </thead>
     <tbody>
-      <tr>
-	<td>0</td>
-	<td>223</td>
-	<td>22</td>
-	<td>22</td>
-	<td>2321321</td>		
+      @for(p <- tr){
+	<tr>
+	<td>@p._1.what</td> 
+	<td>@p._1.sum</td>
+	<td>@p._1.from</td>
+	<td>@p._1.to</td>
+	<td>@p._1.timestamp</td>
+	<td>@p._2</td>	
       </tr>
+      }
     </tbody>
   </table>
 </div>
